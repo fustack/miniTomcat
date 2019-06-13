@@ -22,11 +22,11 @@ public class HttpServer {
 
     public static  String WEB_ROOT;
     static {
-        URL url = HttpServer.class.getClassLoader().getResource("resources");
+        URL url = HttpServer.class.getClassLoader().getResource("webroot");
         WEB_ROOT = Optional.ofNullable(url)
                 .orElseThrow(() -> new IllegalStateException("can't not find user web root file."))
                 .getFile().substring(1);
-
+        System.out.println("web root:" + WEB_ROOT);
     }
 
     //private ServerSocket serverSocket = null;
@@ -41,6 +41,7 @@ public class HttpServer {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(8000, 1, InetAddress.getByName("127.0.0.1"));
+            logger.info("server is starting, port is {}", 8000);
         } catch (IOException e) {
             e.printStackTrace();
             return;

@@ -29,14 +29,16 @@ public class Response {
      * Process the static resource request.
      */
     public void processStaticResource() throws IOException {
-        File file = new File(HttpServer.WEB_ROOT + request.getUri());
+        logger.info("process file:{}", HttpServer.WEB_ROOT + request.getUri());
+        // 如果不加 file.separator 得到的不是绝对路径在 macos上
+        File file = new File(File.separator + HttpServer.WEB_ROOT + request.getUri());
         if (file.exists() || file.isFile()) {
             outputStream.write(responseToByte("200", "OK"));
 
         } else {
             // 404
             logger.error("File {} is not exist or is a directory.", request.getUri());
-            file = new File(HttpServer.WEB_ROOT + "/404.html");
+            file = new File(File.separator + HttpServer.WEB_ROOT + "/404.html");
             outputStream.write(responseToByte("404", "Not found."));
         }
         writeFile(file);
